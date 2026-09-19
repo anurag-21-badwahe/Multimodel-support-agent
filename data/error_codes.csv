@@ -1,0 +1,6 @@
+error_code,meaning,possible_cause,resolution,related_component
+E-101,Controller overtemperature,Blocked airflow or cooling fan failure,Inspect ventilation paths and verify cooling fan operation,C-101
+E-102,DC bus overvoltage,Input surge or excessive supply voltage,Verify the DC supply is within the equipment operating range before restarting,C-102
+E-103,CAN communication timeout,Disconnected CAN wiring or incorrect termination,Inspect CAN wiring and termination at the communication interface,C-103
+E-104,Low coolant pressure,Leakage or closed valve,Check coolant level and valve V2,V2
+E-105,Encoder signal fault,Loose encoder connector or damaged cable,Reseat the encoder connector and inspect the encoder cable,C-105

@@ -1,0 +1,16 @@
+error_code,step_number,instruction,safety_note
+E-101,1,Power down the equipment and allow the enclosure to cool,Do not open the enclosure while hot
+E-101,2,Inspect the ventilation path for blockage,Keep hands clear of moving fan blades
+E-101,3,Verify the cooling fan operates after safe restart,Restart only after the equipment reaches a safe temperature
+E-102,1,Measure the DC supply before restarting,Use appropriate electrical measurement PPE
+E-102,2,Verify the supply is within the equipment operating range,Do not probe exposed conductors on an energized circuit
+E-102,3,Restart only after the overvoltage condition is corrected,Follow the site's electrical isolation procedure
+E-103,1,Power down the test setup before inspecting CAN wiring,Follow the site's electrical isolation procedure
+E-103,2,Inspect CAN H and CAN L connections and termination,Do not work on live wiring
+E-103,3,Restore the connection and run a communication check,Keep cables secured away from moving equipment
+E-104,1,Check the coolant reservoir level,Use the site's approved coolant handling procedure
+E-104,2,Inspect the cooling loop for visible leakage,Stop the test if leakage is present
+E-104,3,Check valve V2 position and restore coolant flow if appropriate,Do not open pressurized coolant connections
+E-105,1,Stop the test and isolate the equipment,Follow the site's equipment isolation procedure
+E-105,2,Reseat the encoder connector,Do not connect or disconnect signal wiring on energized equipment
+E-105,3,Inspect the encoder cable for visible damage,Replace damaged wiring only under the site's approved procedure

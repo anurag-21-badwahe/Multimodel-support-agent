@@ -1,0 +1,6 @@
+component_id,component_name,purpose,location,related_error
+C-101,Cooling Fan,Removes heat from the controller enclosure,Controller enclosure,E-101
+C-102,DC Bus Monitor,Measures the DC bus voltage,Power section,E-102
+C-103,CAN Interface,Provides CAN communication between the controller and test equipment,Communications board,E-103
+V2,Coolant Valve V2,Controls coolant flow through the cooling loop,Cooling circuit,E-104
+C-105,Encoder Interface,Receives position feedback from the motor encoder,Motor interface board,E-105

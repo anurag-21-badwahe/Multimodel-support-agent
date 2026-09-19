@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multimodal LangGraph Troubleshooter</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">LANGGRAPH · FASTAPI · SYNTHETIC DATA</p>
+        <h1>Equipment Troubleshooter</h1>
+        <p class="subtitle">
+          Ask about an error code or upload a synthetic error-code image. Supported answers are grounded only in the CSV knowledge base.
+        </p>
+      </div>
+      <span class="badge">Synthetic data only</span>
+    </header>
+
+    <section class="panel input-panel" aria-labelledby="input-title">
+      <div class="panel-header">
+        <div>
+          <h2 id="input-title">Troubleshooting request</h2>
+          <p>Text is optional when an image is provided.</p>
+        </div>
+      </div>
+
+      <label for="question">Question</label>
+      <textarea id="question" rows="4" maxlength="4000" placeholder="Example: What does error code E-104 mean, and how should I resolve it?"></textarea>
+
+      <div class="upload-row">
+        <div class="file-control">
+          <label for="image">Error-code image</label>
+          <input id="image" type="file" accept="image/png,image/jpeg" />
+          <small>PNG/JPG only · maximum 5 MB</small>
+        </div>
+        <div class="preview-wrap" id="previewWrap" hidden>
+          <img id="preview" alt="Selected error-code preview">
+          <button type="button" class="icon-button" id="removeImage" aria-label="Remove selected image">×</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="primary" id="sendButton">
+          <span class="spinner" id="spinner" hidden></span>
+          <span id="sendLabel">Send request</span>
+        </button>
+        <button type="button" class="secondary" id="clearButton">Clear</button>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="results-grid" aria-label="Troubleshooting result">
+      <article class="result-card answer-card">
+        <div class="card-title-row">
+          <h2>Final answer</h2>
+          <span class="pill" id="evidencePill">No result yet</span>
+        </div>
+        <div class="answer-content" id="answerContent">
+          <p class="placeholder">Your grounded troubleshooting response will appear here.</p>
+        </div>
+      </article>
+
+      <article class="result-card">
+        <h2>Detected error code</h2>
+        <div class="code-display" id="detectedCode">—</div>
+        <p class="muted" id="imageStatus">No image analysis yet.</p>
+      </article>
+
+      <article class="result-card sources-card">
+        <h2>Data sources</h2>
+        <p class="muted">Only matched synthetic CSV records are shown.</p>
+        <div id="sourcesList" class="sources-list">
+          <p class="placeholder">No sources yet.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
