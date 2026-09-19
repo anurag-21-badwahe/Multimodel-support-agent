@@ -64,6 +64,7 @@ class TroubleshootingState(TypedDict, total=False):
     sources: list[dict[str, Any]]
     answer: str
     error_message: str | None
+    _langfuse_callbacks: list[Any]
 
 
 def _message_text(response: Any) -> str:
@@ -83,6 +84,14 @@ def _message_text(response: Any) -> str:
         return "\n".join(parts).strip()
 
     return str(content).strip()
+
+
+async def _invoke_model(model: Any, prompt: Any, callbacks: list[Any]) -> Any:
+    """Invoke a model without changing the no-tracing call contract."""
+
+    if callbacks:
+        return await model.ainvoke(prompt, config={"callbacks": callbacks})
+    return await model.ainvoke(prompt)
 
 
 def _known_error_codes() -> set[str]:
@@ -172,7 +181,8 @@ Return exactly one token: a catalog error code such as E-104, or NONE.
 """
 
     model = get_llm(FAST_TEXT_MODEL)
-    response = await model.ainvoke(prompt)
+    callbacks = state.get("_langfuse_callbacks", [])
+    response = await _invoke_model(model, prompt, callbacks)
     code = _validate_known_code(_first_code(_message_text(response)))
 
     return {
@@ -258,7 +268,8 @@ Never invent a code.
                 {"type": "image_url", "image_url": {"url": data_url}},
             ]
         )
-        response = await model.ainvoke([message])
+        callbacks = state.get("_langfuse_callbacks", [])
+        response = await _invoke_model(model, [message], callbacks)
         raw_output = _message_text(response)
     except Exception as exc:  # Model/API failures are operational uncertainty, not evidence.
         return {
@@ -340,7 +351,8 @@ Write the final answer now.
 """
 
     model = get_llm(FAST_TEXT_MODEL)
-    response = await model.ainvoke(prompt)
+    callbacks = state.get("_langfuse_callbacks", [])
+    response = await _invoke_model(model, prompt, callbacks)
     answer = _message_text(response)
 
     # A lightweight deterministic safeguard: if the model dropped the exact code,

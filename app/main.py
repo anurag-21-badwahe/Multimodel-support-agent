@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 from io import BytesIO
 
 from app.graph import MAX_IMAGE_BYTES, troubleshooting_graph
+from app.observability import request_trace
 
 load_dotenv()
 
@@ -145,7 +146,11 @@ async def chat_query(payload: ChatQueryRequest) -> ChatResponse:
     """Process a text-only question through the LangGraph workflow."""
 
     try:
-        result = await troubleshooting_graph.ainvoke({"question": payload.question})
+        with request_trace(payload.question, has_image=False) as trace:
+            result = await troubleshooting_graph.ainvoke(
+                {"question": payload.question, "_langfuse_callbacks": trace.callbacks}
+            )
+            trace.complete(result)
         print("called api/chat/query")
         return _to_response(result)
     except HTTPException:
@@ -171,13 +176,16 @@ async def chat_query_with_image(
     image_b64 = base64.b64encode(data).decode("ascii")
 
     try:
-        result = await troubleshooting_graph.ainvoke(
-            {
-                "question": question,
-                "image_base64": image_b64,
-                "image_mime_type": mime,
-            }
-        )
+        with request_trace(question, has_image=True) as trace:
+            result = await troubleshooting_graph.ainvoke(
+                {
+                    "question": question,
+                    "image_base64": image_b64,
+                    "image_mime_type": mime,
+                    "_langfuse_callbacks": trace.callbacks,
+                }
+            )
+            trace.complete(result)
         return _to_response(result)
     except HTTPException:
         raise

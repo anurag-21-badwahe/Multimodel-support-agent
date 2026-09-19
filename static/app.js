@@ -5,6 +5,8 @@
   const imageInput = document.getElementById("image");
   const previewWrap = document.getElementById("previewWrap");
   const preview = document.getElementById("preview");
+   const uploadEmpty = document.getElementById("uploadEmpty");
+   const dropzone = document.getElementById("dropzone");
   const removeImage = document.getElementById("removeImage");
   const sendButton = document.getElementById("sendButton");
   const sendLabel = document.getElementById("sendLabel");
@@ -15,6 +17,8 @@
   const detectedCode = document.getElementById("detectedCode");
   const imageStatus = document.getElementById("imageStatus");
   const sourcesList = document.getElementById("sourcesList");
+   const sourceCount = document.getElementById("sourceCount");
+   const questionCount = document.getElementById("questionCount");
   const evidencePill = document.getElementById("evidencePill");
 
   const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -33,11 +37,13 @@
     imageInput.value = "";
     preview.removeAttribute("src");
     previewWrap.hidden = true;
+     uploadEmpty.hidden = false;
     imageStatus.textContent = "No image analysis yet.";
   }
 
   function renderSources(sources) {
     sourcesList.innerHTML = "";
+    sourceCount.textContent = String(sources.length);
     if (!sources.length) {
       const empty = document.createElement("p");
       empty.className = "placeholder";
@@ -76,6 +82,7 @@
     }
 
     evidencePill.textContent = data.evidence_found ? "Evidence found" : "Insufficient evidence";
+     evidencePill.className = `pill ${data.evidence_found ? "pill-good" : "pill-warning"}`;
     renderSources(data.sources || []);
   }
 
@@ -120,17 +127,55 @@
     previewUrl = URL.createObjectURL(file);
     preview.src = previewUrl;
     previewWrap.hidden = false;
+     uploadEmpty.hidden = true;
     imageStatus.textContent = `${file.name} selected.`;
   });
+
+   question.addEventListener("input", () => {
+     questionCount.textContent = `${question.value.length} / 4000`;
+   });
+
+  question.addEventListener("keydown", (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      event.preventDefault();
+      sendButton.click();
+    }
+  });
+
+   ["dragenter", "dragover"].forEach((eventName) => {
+     dropzone.addEventListener(eventName, (event) => {
+       event.preventDefault();
+       dropzone.classList.add("dragging");
+     });
+   });
+
+   ["dragleave", "drop"].forEach((eventName) => {
+     dropzone.addEventListener(eventName, (event) => {
+       event.preventDefault();
+       dropzone.classList.remove("dragging");
+     });
+   });
+
+   dropzone.addEventListener("drop", (event) => {
+     const file = event.dataTransfer.files?.[0];
+     if (!file) return;
+     const transfer = new DataTransfer();
+     transfer.items.add(file);
+     imageInput.files = transfer.files;
+     imageInput.dispatchEvent(new Event("change"));
+   });
 
   removeImage.addEventListener("click", resetPreview);
 
   clearButton.addEventListener("click", () => {
     question.value = "";
+    questionCount.textContent = "0 / 4000";
     resetPreview();
-    answerContent.innerHTML = '<p class="placeholder">Your grounded troubleshooting response will appear here.</p>';
+    answerContent.innerHTML = '<div class="empty-answer"><span class="empty-line wide"></span><span class="empty-line"></span><span class="empty-line short"></span><p>Your grounded troubleshooting response will appear here.</p></div>';
     detectedCode.textContent = "—";
     evidencePill.textContent = "No result yet";
+    evidencePill.className = "pill";
+    sourceCount.textContent = "0";
     sourcesList.innerHTML = '<p class="placeholder">No sources yet.</p>';
     setStatus("");
     question.focus();
@@ -151,7 +196,7 @@
     }
 
     setLoading(true);
-    setStatus("Running the LangGraph workflow...", "success");
+    setStatus("Thinking...", "success");
 
     try {
       let response;

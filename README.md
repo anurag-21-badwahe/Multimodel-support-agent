@@ -114,6 +114,20 @@ copy .env.example .env
 
 Then add at least the key needed by the models you select.
 
+## Langfuse tracing
+
+The API endpoints create a `chat-response` root observation when Langfuse is configured. The LangChain callback integration records the text extraction, image extraction, and final answer model generations beneath that request. Image base64 data is intentionally excluded from the root trace input; only the question and an image-present flag are recorded there.
+
+Add these variables to `.env` or your hosting provider's environment settings:
+
+```env
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_BASE_URL=https://cloud.langfuse.com
+```
+
+Tracing is disabled when any of these values is missing. No application code changes are needed between local and hosted environments. The Langfuse SDK buffers events in the background and the application flushes pending events when each request trace closes.
+
 ## Model factory
 
 `app/llm_factory.py` provides the required `get_llm(model_name)` function.

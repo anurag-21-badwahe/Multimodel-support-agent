@@ -8,75 +8,43 @@
 </head>
 <body>
   <main class="app-shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">LANGGRAPH · FASTAPI · SYNTHETIC DATA</p>
-        <h1>Equipment Troubleshooter</h1>
-        <p class="subtitle">
-          Ask about an error code or upload a synthetic error-code image. Supported answers are grounded only in the CSV knowledge base.
-        </p>
-      </div>
-      <span class="badge">Synthetic data only</span>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Equipment Troubleshooter home">
+        <span class="brand-mark" aria-hidden="true">ET</span>
+        <span><strong>Equipment</strong><small>troubleshooter</small></span>
+      </a>
     </header>
 
-    <section class="panel input-panel" aria-labelledby="input-title">
-      <div class="panel-header">
-        <div>
-          <h2 id="input-title">Troubleshooting request</h2>
-          <p>Text is optional when an image is provided.</p>
-        </div>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">EQUIPMENT SUPPORT</p>
+        <h1 id="page-title">What can we<br><em>help solve?</em></h1>
+        <p class="subtitle">Ask about an error code or upload a photo. We will check the support records and show you what to do next.</p>
       </div>
-
-      <label for="question">Question</label>
-      <textarea id="question" rows="4" maxlength="4000" placeholder="Example: What does error code E-104 mean, and how should I resolve it?"></textarea>
-
-      <div class="upload-row">
-        <div class="file-control">
-          <label for="image">Error-code image</label>
-          <input id="image" type="file" accept="image/png,image/jpeg" />
-          <small>PNG/JPG only · maximum 5 MB</small>
-        </div>
-        <div class="preview-wrap" id="previewWrap" hidden>
-          <img id="preview" alt="Selected error-code preview">
-          <button type="button" class="icon-button" id="removeImage" aria-label="Remove selected image">×</button>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button type="button" class="primary" id="sendButton">
-          <span class="spinner" id="spinner" hidden></span>
-          <span id="sendLabel">Send request</span>
-        </button>
-        <button type="button" class="secondary" id="clearButton">Clear</button>
-      </div>
-
-      <div class="status" id="status" role="status" aria-live="polite"></div>
     </section>
 
-    <section class="results-grid" aria-label="Troubleshooting result">
-      <article class="result-card answer-card">
-        <div class="card-title-row">
-          <h2>Final answer</h2>
-          <span class="pill" id="evidencePill">No result yet</span>
+    <section class="workspace" aria-labelledby="input-title">
+      <div class="workspace-heading"><h2 id="input-title">How can I help?</h2><span class="shortcut">⌘ ↵ to run</span></div>
+      <div class="composer-grid">
+        <div class="question-column">
+          <label for="question">What are you seeing?</label>
+          <textarea id="question" rows="5" maxlength="4000" placeholder="Example: What does E-104 mean, and what should I check first?"></textarea>
+          <div class="composer-footer"><span id="questionCount">0 / 4000</span><span>Text is optional with an image</span></div>
         </div>
-        <div class="answer-content" id="answerContent">
-          <p class="placeholder">Your grounded troubleshooting response will appear here.</p>
+        <div class="dropzone" id="dropzone">
+          <input id="image" type="file" accept="image/png,image/jpeg" />
+          <div class="upload-empty" id="uploadEmpty"><span class="upload-icon" aria-hidden="true">↑</span><strong>Drop an error image here</strong><span>or <u>browse files</u></span><small>PNG or JPG · up to 5 MB</small></div>
+          <div class="preview-wrap" id="previewWrap" hidden><img id="preview" alt="Selected error-code preview"><button type="button" class="icon-button" id="removeImage" aria-label="Remove selected image">×</button><div class="preview-label">Image ready for analysis</div></div>
         </div>
-      </article>
+      </div>
+      <div class="actions"><button type="button" class="primary" id="sendButton"><span class="spinner" id="spinner" hidden></span><span id="sendLabel">Run diagnosis</span><span class="button-arrow">↗</span></button><button type="button" class="secondary" id="clearButton">Reset</button><div class="status" id="status" role="status" aria-live="polite"></div></div>
+    </section>
 
-      <article class="result-card">
-        <h2>Detected error code</h2>
-        <div class="code-display" id="detectedCode">—</div>
-        <p class="muted" id="imageStatus">No image analysis yet.</p>
-      </article>
-
-      <article class="result-card sources-card">
-        <h2>Data sources</h2>
-        <p class="muted">Only matched synthetic CSV records are shown.</p>
-        <div id="sourcesList" class="sources-list">
-          <p class="placeholder">No sources yet.</p>
-        </div>
-      </article>
+    <section class="results-area" aria-label="Troubleshooting result">
+      <div class="results-heading"><h2>Answer</h2><span class="pill" id="evidencePill">Awaiting request</span></div>
+      <div class="results-grid">
+        <article class="result-card answer-card"><div class="answer-content" id="answerContent"><div class="empty-answer"><span class="empty-line wide"></span><span class="empty-line"></span><span class="empty-line short"></span><p>Your answer will appear here.</p></div></div><div class="answer-meta"><span>Code: <strong id="detectedCode">—</strong></span><span id="imageStatus">No signal analyzed yet.</span><span>Sources: <strong id="sourceCount">0</strong></span></div><div id="sourcesList" class="sources-list" hidden></div></article>
+      </div>
     </section>
   </main>
 
