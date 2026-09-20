@@ -1,6 +1,9 @@
 error_code,meaning,possible_cause,resolution,related_component
-E-101,Controller overtemperature,Blocked airflow or cooling fan failure,Inspect ventilation paths and verify cooling fan operation,C-101
-E-102,DC bus overvoltage,Input surge or excessive supply voltage,Verify the DC supply is within the equipment operating range before restarting,C-102
-E-103,CAN communication timeout,Disconnected CAN wiring or incorrect termination,Inspect CAN wiring and termination at the communication interface,C-103
-E-104,Low coolant pressure,Leakage or closed valve,Check coolant level and valve V2,V2
-E-105,Encoder signal fault,Loose encoder connector or damaged cable,Reseat the encoder connector and inspect the encoder cable,C-105
+E-101,LLM request timeout,Model service latency or overloaded inference endpoint,Verify model service availability and review request timeout and retry configuration,C-101
+E-102,Embedding generation failure,Invalid input or embedding service unavailable,Validate the input and verify embedding service configuration and availability,C-102
+E-103,Vector search failure,Database connection failure or incorrect collection/index configuration,Verify vector database connectivity and confirm the collection and index configuration,C-103
+E-104,Prompt construction error,Missing variables or incorrectly formatted prompt template,Validate prompt variables and verify the prompt template configuration,C-104
+E-105,API request failure,Incorrect endpoint configuration or backend service unavailable,Verify the API endpoint configuration and check backend service availability,C-105
+E-106,Database query failure,Invalid query or database connection problem,Validate the query and verify database connectivity and credentials,C-106
+E-107,Authentication failure,Expired token or invalid authentication credentials,Verify token validity and refresh authentication credentials when required,C-107
+E-108,Message processing failure,Queue connection failure or malformed message payload,Verify queue connectivity and validate the message payload,C-108

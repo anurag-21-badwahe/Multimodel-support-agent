@@ -1,16 +1,25 @@
 error_code,step_number,instruction,safety_note
-E-101,1,Power down the equipment and allow the enclosure to cool,Do not open the enclosure while hot
-E-101,2,Inspect the ventilation path for blockage,Keep hands clear of moving fan blades
-E-101,3,Verify the cooling fan operates after safe restart,Restart only after the equipment reaches a safe temperature
-E-102,1,Measure the DC supply before restarting,Use appropriate electrical measurement PPE
-E-102,2,Verify the supply is within the equipment operating range,Do not probe exposed conductors on an energized circuit
-E-102,3,Restart only after the overvoltage condition is corrected,Follow the site's electrical isolation procedure
-E-103,1,Power down the test setup before inspecting CAN wiring,Follow the site's electrical isolation procedure
-E-103,2,Inspect CAN H and CAN L connections and termination,Do not work on live wiring
-E-103,3,Restore the connection and run a communication check,Keep cables secured away from moving equipment
-E-104,1,Check the coolant reservoir level,Use the site's approved coolant handling procedure
-E-104,2,Inspect the cooling loop for visible leakage,Stop the test if leakage is present
-E-104,3,Check valve V2 position and restore coolant flow if appropriate,Do not open pressurized coolant connections
-E-105,1,Stop the test and isolate the equipment,Follow the site's equipment isolation procedure
-E-105,2,Reseat the encoder connector,Do not connect or disconnect signal wiring on energized equipment
-E-105,3,Inspect the encoder cable for visible damage,Replace damaged wiring only under the site's approved procedure
+E-101,1,Check the LLM service health and availability,Do not expose API keys or authentication credentials in logs
+E-101,2,Review request timeout and retry configuration,Avoid excessive retries that can overload the model service
+E-101,3,Retry the request after confirming the service is available,Monitor request latency and error rates after recovery
+E-102,1,Verify the input text or document is valid,Do not send sensitive data to an unauthorized AI service
+E-102,2,Check embedding service configuration and availability,Do not expose service credentials in application logs
+E-102,3,Regenerate the embedding after correcting the input or service configuration,Verify embedding dimensions match the configured vector database
+E-103,1,Check the vector database connection,Do not expose database credentials in logs
+E-103,2,Verify the collection and vector index configuration,Avoid modifying production indexes without an approved change
+E-103,3,Run a test similarity search after restoring the configuration,Verify retrieved documents are relevant before using them in an AI response
+E-104,1,Inspect the prompt template for missing variables,Do not include secrets or sensitive information in prompts
+E-104,2,Verify all required prompt variables are provided,Validate user-controlled input before inserting it into prompts
+E-104,3,Run a test request and inspect the generated prompt,Do not log confidential prompt content in production
+E-105,1,Verify the configured API endpoint and HTTP method,Do not expose authentication tokens in request logs
+E-105,2,Check backend service availability and response status,Use appropriate authentication and authorization controls
+E-105,3,Run an API request and verify the response payload,Validate external input before processing it
+E-106,1,Check database connectivity and connection configuration,Do not print database passwords or connection strings
+E-106,2,Review the failing query and validate its parameters,Avoid constructing SQL queries directly from untrusted input
+E-106,3,Run the corrected query and verify the returned data,Use parameterized queries and appropriate database permissions
+E-107,1,Verify the authentication token and expiration time,Do not share authentication tokens with other users
+E-107,2,Refresh or reauthenticate when the token has expired,Store credentials using approved secure storage mechanisms
+E-107,3,Retry the request after successful authentication,Verify the user has the required authorization before accessing resources
+E-108,1,Check message queue connectivity and service health,Do not publish sensitive information unnecessarily
+E-108,2,Inspect the message structure and required fields,Validate and sanitize message payloads before processing
+E-108,3,Retry the failed message using the configured retry mechanism,Avoid creating infinite retry loops or duplicate processing
